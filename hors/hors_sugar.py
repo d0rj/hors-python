@@ -4,6 +4,7 @@ from re import sub
 
 from .models.hors_parse_result import HorsParseResult
 from .hors_text_parser import parse
+from .utils.w2n import replace_word_nums_safe
 
 
 def preprocess(phrase: str) -> str:
@@ -26,6 +27,8 @@ def preprocess(phrase: str) -> str:
     phrase = sub(r'в течение (\w*а)', r'через \1', phrase)
     phrase = phrase.replace('получас', '30 минут')
     phrase = sub(r'(\d+) с половиной часа', r'\1 часа 30 минут', phrase)
+
+    phrase = replace_word_nums_safe(phrase)
 
     return phrase
 
