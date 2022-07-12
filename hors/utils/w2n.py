@@ -529,7 +529,7 @@ russian_number_system = {
 decimal_words = ['ноль', 'один', 'два', 'три', 'четыре', 'пять', 'шесть', 'семь', 'восемь', 'девять']
 
 
-def number_formation(number_words: List[str]) -> int:
+def _number_formation(number_words: List[str]) -> int:
     numbers = [
         russian_number_system[number_word] for number_word in number_words
     ]
@@ -542,7 +542,7 @@ def number_formation(number_words: List[str]) -> int:
     return numbers[0]
 
 
-def get_decimal_sum(decimal_digit_words: List[str]) -> float:
+def _get_decimal_sum(decimal_digit_words: List[str]) -> float:
     decimal_number_str = [
         russian_number_system[dec_word] if dec_word in decimal_words else 0
         for dec_word in decimal_digit_words
@@ -551,7 +551,7 @@ def get_decimal_sum(decimal_digit_words: List[str]) -> float:
     return float(final_decimal_string)
 
 
-def numeric_words_to_num(clean_numbers: List[str]) -> Union[int, float, None]:
+def _numeric_words_to_num(clean_numbers: List[str]) -> Union[int, float, None]:
     # Error if user enters million,billion, thousand or decimal point twice
     if clean_numbers.count('тысяча') > 1 or clean_numbers.count('миллион') > 1 or\
             clean_numbers.count('миллиард') > 1 or clean_numbers.count('целых') > 1 or clean_numbers.count('целая') > 1:
@@ -621,46 +621,46 @@ def numeric_words_to_num(clean_numbers: List[str]) -> Union[int, float, None]:
 
         else:
             if billion_index > -1:
-                billion_multiplier = number_formation(clean_numbers[0:billion_index])
+                billion_multiplier = _number_formation(clean_numbers[0:billion_index])
                 total_sum += billion_multiplier * 1000000000
 
             if million_index > -1:
                 if billion_index > -1:
-                    million_multiplier = number_formation(clean_numbers[billion_index + 1:million_index])
+                    million_multiplier = _number_formation(clean_numbers[billion_index + 1:million_index])
                 else:
-                    million_multiplier = number_formation(clean_numbers[0:million_index])
+                    million_multiplier = _number_formation(clean_numbers[0:million_index])
                 total_sum += million_multiplier * 1000000
 
             if thousand_index > -1:
                 if million_index > -1:
-                    thousand_multiplier = number_formation(clean_numbers[million_index + 1:thousand_index])
+                    thousand_multiplier = _number_formation(clean_numbers[million_index + 1:thousand_index])
                         
                 elif billion_index > -1 and million_index == -1:
-                    thousand_multiplier = number_formation(clean_numbers[billion_index + 1:thousand_index])
+                    thousand_multiplier = _number_formation(clean_numbers[billion_index + 1:thousand_index])
                         
                 elif thousand_index == 0:
                     thousand_multiplier = 1
                 
                 else:
-                    thousand_multiplier = number_formation(clean_numbers[0:thousand_index])
+                    thousand_multiplier = _number_formation(clean_numbers[0:thousand_index])
                 total_sum += thousand_multiplier * 1000
 
             if thousand_index > -1 and thousand_index == len(clean_numbers) - 1:
                 hundreds = 0
             elif thousand_index > -1 and thousand_index != len(clean_numbers) - 1:
-                hundreds = number_formation(clean_numbers[thousand_index + 1:])
+                hundreds = _number_formation(clean_numbers[thousand_index + 1:])
             elif million_index > -1 and million_index != len(clean_numbers) - 1:
-                hundreds = number_formation(clean_numbers[million_index + 1:])
+                hundreds = _number_formation(clean_numbers[million_index + 1:])
             elif billion_index > -1 and billion_index != len(clean_numbers) - 1:
-                hundreds = number_formation(clean_numbers[billion_index + 1:])
+                hundreds = _number_formation(clean_numbers[billion_index + 1:])
             elif thousand_index == -1 and million_index == -1 and billion_index == -1:
-                hundreds = number_formation(clean_numbers)
+                hundreds = _number_formation(clean_numbers)
             else:
                 hundreds = 0
             total_sum += hundreds
 
     if len(clean_decimal_numbers) > 0:
-        decimal_sum = get_decimal_sum(clean_decimal_numbers)
+        decimal_sum = _get_decimal_sum(clean_decimal_numbers)
         total_sum += decimal_sum
 
     return total_sum
@@ -679,14 +679,14 @@ def replace_word_nums(number_sentence: str) -> Union[int, float, None]:
             clean_numbers.append(word.lower())
         else:
             if len(clean_numbers) > 0:
-                number_string = str(numeric_words_to_num(clean_numbers))
+                number_string = str(_numeric_words_to_num(clean_numbers))
                 result_sentence_words.append(number_string)
                 result_sentence_words.append(word)
                 clean_numbers = []
             else:
                 result_sentence_words.append(word)
     if len(clean_numbers) > 0:
-        result_sentence_words.append(str(numeric_words_to_num(clean_numbers)))
+        result_sentence_words.append(str(_numeric_words_to_num(clean_numbers)))
 
     return ' '.join(result_sentence_words)
 
