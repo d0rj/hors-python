@@ -32,3 +32,10 @@ datetime.datetime(1961, 4, 12, 11, 0)
 ```bash
 python -m unittest discover tests
 ```
+
+## Сборка в pickle
+
+```bash
+python3 -m pip install cloudpickle
+python3 -m hors
+```
