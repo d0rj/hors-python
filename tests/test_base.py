@@ -332,6 +332,38 @@ class BaseHorsTests(unittest.TestCase):
         self.assertEqual(1, date_from.day)
         self.assertEqual(8, date_from.month)
 
+    def test_just_number_lower0(self):
+        starting_point = datetime(2022, 8, 1)
+        result = process_phrase('минус три', starting_point)
+
+        date = result.dates[0]
+        self.assertEqual(DateTimeTokenType.FIXED, date.type)
+        date_from = date.date_from
+        self.assertEqual(15, date_from.hour)
+        self.assertEqual(1, date_from.day)
+        self.assertEqual(8, date_from.month)
+
+    def test_just_number_0(self):
+        starting_point = datetime(2022, 8, 1)
+        result = process_phrase('ноль', starting_point)
+
+        date = result.dates[0]
+        self.assertEqual(DateTimeTokenType.FIXED, date.type)
+        date_from = date.date_from
+        self.assertEqual(12, date_from.hour)
+        self.assertEqual(1, date_from.day)
+        self.assertEqual(8, date_from.month)
+
+    def test_just_number_24(self):
+        starting_point = datetime(2022, 8, 1)
+        result = process_phrase('двадцать четыре', starting_point)
+
+        date = result.dates[0]
+        self.assertEqual(DateTimeTokenType.FIXED, date.type)
+        date_from = date.date_from
+        self.assertEqual(24, date_from.day)
+        self.assertEqual(8, date_from.month)
+
     def test_just_number_over24(self):
         starting_point = datetime(2022, 8, 1)
         result = process_phrase('двадцать пятого', starting_point)
@@ -340,6 +372,26 @@ class BaseHorsTests(unittest.TestCase):
         self.assertEqual(DateTimeTokenType.FIXED, date.type)
         date_from = date.date_from
         self.assertEqual(25, date_from.day)
+        self.assertEqual(8, date_from.month)
+
+    def test_just_number_31(self):
+        starting_point = datetime(2022, 8, 1)
+        result = process_phrase('тридцать первого', starting_point)
+
+        date = result.dates[0]
+        self.assertEqual(DateTimeTokenType.FIXED, date.type)
+        date_from = date.date_from
+        self.assertEqual(31, date_from.day)
+        self.assertEqual(8, date_from.month)
+
+    def test_just_number_over31(self):
+        starting_point = datetime(2022, 8, 1)
+        result = process_phrase('тридцать четыре', starting_point)
+
+        date = result.dates[0]
+        self.assertEqual(DateTimeTokenType.FIXED, date.type)
+        date_from = date.date_from
+        self.assertEqual(31, date_from.day)
         self.assertEqual(8, date_from.month)
 
 
