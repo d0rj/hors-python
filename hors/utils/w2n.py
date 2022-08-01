@@ -2,6 +2,8 @@ import json
 import os
 from typing import List, Union
 
+from ..utils.helpers import increasing_subarrays, all_increasing
+
 
 NUMBER_SYSTEM_PATH = os.path.join(os.path.dirname(__file__), 'russian_number_system.json')
 
@@ -10,10 +12,12 @@ russian_number_system = json.load(open(NUMBER_SYSTEM_PATH, 'r'))
 decimal_words = ['ноль', 'один', 'два', 'три', 'четыре', 'пять', 'шесть', 'семь', 'восемь', 'девять']
 
 
-def _number_formation(number_words: List[str]) -> int:
+def _number_formation(number_words: List[str]) -> Union[int, List[int]]:
     numbers = [
         russian_number_system[number_word] for number_word in number_words
     ]
+    if all_increasing(numbers):
+        return list(map(sum, increasing_subarrays(numbers)))
     if len(numbers) == 4:
         return (numbers[0] * numbers[1]) + numbers[2] + numbers[3]
     if len(numbers) == 3:
@@ -23,26 +27,11 @@ def _number_formation(number_words: List[str]) -> int:
     return numbers[0]
 
 
-def _get_decimal_sum(decimal_digit_words: List[str]) -> float:
-    decimal_number_str = [
-        russian_number_system[dec_word] if dec_word in decimal_words else 0
-        for dec_word in decimal_digit_words
-    ]
-    final_decimal_string = '0.' + ''.join(map(str,decimal_number_str))
-    return float(final_decimal_string)
-
-
 def _numeric_words_to_num(clean_numbers: List[str]) -> Union[int, float, None]:
     # Error if user enters million,billion, thousand or decimal point twice
     if clean_numbers.count('тысяча') > 1 or clean_numbers.count('миллион') > 1 or\
             clean_numbers.count('миллиард') > 1 or clean_numbers.count('целых') > 1 or clean_numbers.count('целая') > 1:
         raise ValueError('Redundant number word! Please enter a valid number word (eg. two million twenty three thousand and forty nine)')
-
-    clean_decimal_numbers = []
-    # separate decimal part of number (if exists)
-    if clean_numbers.count('целых') == 1 or clean_numbers.count('целая') == 1:
-        clean_decimal_numbers = clean_numbers[clean_numbers.index('целых') + 1:]
-        clean_numbers = clean_numbers[:clean_numbers.index('целых')]
 
     if 'миллиард' in clean_numbers:
         billion_index = clean_numbers.index('миллиард')
@@ -138,11 +127,10 @@ def _numeric_words_to_num(clean_numbers: List[str]) -> Union[int, float, None]:
                 hundreds = _number_formation(clean_numbers)
             else:
                 hundreds = 0
-            total_sum += hundreds
 
-    if len(clean_decimal_numbers) > 0:
-        decimal_sum = _get_decimal_sum(clean_decimal_numbers)
-        total_sum += decimal_sum
+            if type(hundreds) == list:
+                return ' '.join(map(str, hundreds))
+            total_sum += hundreds
 
     return total_sum
 

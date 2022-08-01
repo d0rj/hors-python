@@ -117,7 +117,7 @@ class BaseHorsTests(unittest.TestCase):
     def test_multiple_simple(self):
         starting_point = datetime(2019, 10, 13)
         result = process_phrase(
-            'Позавчера в 6:30 состоялось совещание, а завтра днём будет хорошая погода.',
+            'Позавчера в шесть тридцать состоялось совещание, а завтра днём будет хорошая погода.',
             starting_point)
         self.assertEqual(2, len(result.dates))
 
