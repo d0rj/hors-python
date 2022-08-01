@@ -316,7 +316,10 @@ class BaseHorsTests(unittest.TestCase):
         self.assertEqual(13, date_from.day)
         self.assertEqual(13, date_to.day)
 
-# class BaseHorsTests(unittest.TestCase):
+    def test_infinite_parsing(self):
+        starting_point = datetime(2022, 8, 1)
+        _ = process_phrase('двадцать пятого', starting_point)
+        self.assertTrue(True)
 
 
 if __name__ == '__main__':
