@@ -5,6 +5,7 @@ from re import sub
 from .models.hors_parse_result import HorsParseResult
 from .hors_text_parser import parse
 from .utils.w2n import replace_word_nums_safe
+from .dict.keywords import Keywords
 
 
 def preprocess(phrase: str) -> str:
@@ -39,6 +40,10 @@ def preprocess_today(phrase: str) -> str:
     return phrase
 
 
+def preprocess_add_dayinmonth(phrase: str) -> str:
+    return f'{phrase} {Keywords.DAY_IN_MONTH[0]}'
+
+
 def process_phrase(phrase: str, now: Optional[datetime] = None) -> HorsParseResult:
     phrase = preprocess(phrase)
     now = now or datetime.now()
@@ -46,6 +51,9 @@ def process_phrase(phrase: str, now: Optional[datetime] = None) -> HorsParseResu
     hors_result = parse(phrase, now)
     if not hors_result.dates:
         phrase = preprocess_today(phrase)
+        hors_result = parse(phrase, now)
+    if not hors_result.dates:
+        phrase = preprocess_add_dayinmonth(phrase)
         hors_result = parse(phrase, now)
 
     return hors_result
