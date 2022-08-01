@@ -75,7 +75,6 @@ def convert_to_token(period: AbstractPeriod, now: datetime) -> DateTimeToken:
         token.span = period.span
 
     return token
-# def convert_to_token(period: AbstractPeriod, now: datetime) -> DateTimeToken:
 
 
 def take_from_adjacent_i(data: DatesRawData, first_index: int, second_index: int, is_linked: bool) -> Tuple[AbstractPeriod, AbstractPeriod]:
@@ -145,7 +144,6 @@ def create_date_period(match, data: DatesRawData, now: datetime, final_periods: 
     else:
         single_date = data.dates[match.start(6)]
         date_to_save = convert_to_token(single_date, now)
-    # if match.group(3) is not None and match.group(4) is not None:
 
     s, e = match.span()
     date_to_save.set_edges(data.edges_by_index(s).start, data.edges_by_index(e - 1).end)
@@ -160,7 +158,6 @@ def create_date_period(match, data: DatesRawData, now: datetime, final_periods: 
         data.dates = data.dates[:s + 1] + data.dates[e:]
 
     return True
-# def create_date_period(match, data: DatesRawData, now: datetime, final_periods: List[DateTimeToken]) -> bool:
 
 
 def collapse_dates(match, data: DatesRawData, _, is_linked: bool) -> bool:

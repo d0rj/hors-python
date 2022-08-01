@@ -39,8 +39,6 @@ class Morph:
         else:
             return any(Morph.has_lemma(word, lemma) for lemma in lemmas)
 
-# class Morph:
-
 
 def load() -> None:
     last_normal_form = None

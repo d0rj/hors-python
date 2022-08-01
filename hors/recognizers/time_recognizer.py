@@ -63,9 +63,7 @@ class TimeRecognizer(Recognizer):
                 data.replace_tokens_by_dates(s, (e - s), date)
                 if match.group(2) == 't':
                     data.return_tokens(s, 't', to_time)
-            # if 0 <= hours <= 23:
 
             return True
-        #  if match.group(5) is not None or match.group(6) is not None or match.group(4) is not None or match.group(1) is not None or match.group(9):
 
         return False

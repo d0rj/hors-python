@@ -25,7 +25,6 @@ class Helpers:
                 break
 
         return value[start_offset:end_offset]
-    # def trim_punctuation(value: str, leave_valid_symbols: bool = True):
 
     @staticmethod
     def swap_two(l: List, first_index: int, second_index: int) -> None:

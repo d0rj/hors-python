@@ -98,9 +98,6 @@ class ParserExtractors:
             return '#'
 
         return 'N' if t == 'и' else '_'
-    # def create_pattern_from(token: str) -> str:
-
-# class ParserExtractors:
 
 
 def period_from(t: str) -> Optional[Period]:

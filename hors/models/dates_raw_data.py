@@ -56,7 +56,7 @@ class DatesRawData:
         for token in tokens:
             len_token = len(token)
             self.tokens.append(TextToken(token, l, l + len_token))
-            l += len_token + 1  # +1 for separator symbol
+            l += len_token + 1
 
         i = 0
         while i < len(self.tokens) - 1:

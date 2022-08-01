@@ -51,7 +51,6 @@ class TimeSpanRecognizer(Recognizer):
                     offset += timedelta(seconds=60*direction*last_number)
                     date.fix_down_to(FixPeriod.TIME)
                 token_index += 1
-            # for l in letters:
 
             date.date = datetime(offset.year, offset.month, offset.day)
             if date.is_fixed(FixPeriod.TIME):
@@ -62,5 +61,4 @@ class TimeSpanRecognizer(Recognizer):
             data.replace_tokens_by_dates(s, (e - s), date)
 
             return True
-        # if match.group(1) is None != match.group(4) is None:
         return False

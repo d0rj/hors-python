@@ -35,6 +35,5 @@ class PartOfDayRecognizer(Recognizer):
                 data.replace_tokens_by_dates(start, length, date)
 
                 return True
-        # if match.group(1) is not None and match.group(3) is not None:
 
         return False
