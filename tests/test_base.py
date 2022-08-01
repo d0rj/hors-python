@@ -13,7 +13,7 @@ class BaseHorsTests(unittest.TestCase):
 
     def test_january(self):
         starting_point = datetime(2019, 10, 13)
-        result = process_phrase('10 января событие', starting_point)
+        result = process_phrase('десятого января событие', starting_point)
         self.assertEqual(1, len(result.dates))
 
         date = result.dates[0]
@@ -23,7 +23,7 @@ class BaseHorsTests(unittest.TestCase):
 
     def test_time_period_before_day(self):
         starting_point = datetime(2019, 10, 13)
-        result = process_phrase('с 5 до 7 вечера в понедельник будет событие', starting_point)
+        result = process_phrase('с пяти до семи вечера в понедельник будет событие', starting_point)
         self.assertEqual(1, len(result.dates))
 
         date = result.dates[0]
@@ -34,7 +34,7 @@ class BaseHorsTests(unittest.TestCase):
 
     def test_time_period_simple(self):
         starting_point = datetime(2019, 10, 13)
-        result = process_phrase('с 10 до 13 событие', starting_point)
+        result = process_phrase('с десяти до тринадцати событие', starting_point)
         self.assertEqual(1, len(result.dates))
 
         date = result.dates[0]
@@ -54,7 +54,7 @@ class BaseHorsTests(unittest.TestCase):
     def test_nighttime(self):
         starting_point = datetime(2020, 1, 1)
         result = process_phrase(
-            'Завтра в 2 ночи полнолуние, а затем в 3 часа ночи новолуние и наконец в 12 часов ночи игра.',
+            'Завтра в два ночи полнолуние, а затем в три часа ночи новолуние и наконец в двенадцати часов ночи игра.',
             starting_point)
         self.assertEqual(3, len(result.dates))
 
@@ -74,7 +74,7 @@ class BaseHorsTests(unittest.TestCase):
     def test_long_period(self):
         starting_point = datetime(2019, 10, 14)
         result = process_phrase(
-            'С вечера следующей среды до четверти 10 утра понедельника в декабре можно будет наблюдать снег',
+            'С вечера следующей среды до четверти десяти утра понедельника в декабре можно будет наблюдать снег',
             starting_point)
         self.assertEqual(1, len(result.dates))
 
@@ -90,7 +90,7 @@ class BaseHorsTests(unittest.TestCase):
 
     def test_collapse_complex(self):
         starting_point = datetime(2019, 10, 13)
-        result = process_phrase('В понедельник в 9 и 10 вечера', starting_point)
+        result = process_phrase('В понедельник в девять и десять вечера', starting_point)
         self.assertEqual(2, len(result.dates))
 
         date = result.dates[0]
@@ -102,7 +102,7 @@ class BaseHorsTests(unittest.TestCase):
         self.assertEqual(14, date.date_from.day)
         self.assertEqual(22, date.date_from.hour)
 
-        result = process_phrase('В понедельник в 10 и 9 вечера', starting_point)
+        result = process_phrase('В понедельник в десять и девять вечера', starting_point)
         self.assertEqual(2, len(result.dates))
 
         date = result.dates[0]
@@ -167,7 +167,7 @@ class BaseHorsTests(unittest.TestCase):
 
     def test_time_after_day(self):
         starting_point = datetime(2019, 10, 8)
-        result = process_phrase('в четверг 16 0 0 будет событие', starting_point)
+        result = process_phrase('в четверг шестнадцать ноль ноль будет событие', starting_point)
         self.assertEqual(1, len(result.dates))
 
         date = result.dates[0]
@@ -178,7 +178,7 @@ class BaseHorsTests(unittest.TestCase):
 
     def test_time_period(self):
         starting_point = datetime(2019, 9, 7)
-        result = process_phrase('В следующий четверг с 9 утра до 6 вечера важный экзамен!', starting_point)
+        result = process_phrase('В следующий четверг с девяти утра до шести вечера важный экзамен!', starting_point)
         self.assertEqual(1, len(result.dates))
 
         date = result.dates[0]
@@ -194,7 +194,7 @@ class BaseHorsTests(unittest.TestCase):
 
     def test_complex_period(self):
         starting_point = datetime(2019, 7, 7)
-        result = process_phrase('хакатон с 12 часов 18 сентября до 12 часов 20 сентября', starting_point)
+        result = process_phrase('хакатон с двенадцати часов восемнадцатого сентября до двенадцати часов двадцатого сентября', starting_point)
         self.assertEqual(1, len(result.dates))
 
         date = result.dates[0]
@@ -211,7 +211,7 @@ class BaseHorsTests(unittest.TestCase):
 
     def test_time_before_day(self):
         starting_point = datetime(2019, 9, 7)
-        result = process_phrase('В 12 часов 12 сентября будет встреча', starting_point)
+        result = process_phrase('В двенадцать часов двенадцатого сентября будет встреча', starting_point)
         self.assertEqual(1, len(result.dates))
 
         date = result.dates[0]
@@ -223,7 +223,7 @@ class BaseHorsTests(unittest.TestCase):
 
     def test_time_hour_of_day(self):
         starting_point = datetime(2019, 9, 7)
-        result = process_phrase('24 сентября в час дня', starting_point)
+        result = process_phrase('двадцать четвёртого сентября в час дня', starting_point)
         self.assertEqual(1, len(result.dates))
 
         date = result.dates[0]
@@ -247,9 +247,9 @@ class BaseHorsTests(unittest.TestCase):
     def test_dates_period(self):
         starting_point = datetime(2019, 8, 6)
         strings = [
-            'с 11 по 15 сентября будет командировка',
-            'от 11 по 15 сентября будет командировка',
-            'с 11 до 15 сентября будет командировка',
+            'с одиннадцатого по пятнадцатое сентября будет командировка',
+            'от одиннадцатого по пятнадцатое сентября будет командировка',
+            'с одиннадцатого до пятнадцатого сентября будет командировка',
         ]
         for s in strings:
             result = process_phrase(s, starting_point)
@@ -263,7 +263,7 @@ class BaseHorsTests(unittest.TestCase):
             self.assertEqual(9, date.date_to.month)
 
         starting_point = datetime(2019, 9, 6)
-        result = process_phrase('с 11 до 15 числа будет командировка', starting_point)
+        result = process_phrase('с одиннадцатого до пятнадцатого числа будет командировка', starting_point)
         self.assertEqual(1, len(result.dates))
 
         date = result.dates[0]
@@ -304,7 +304,7 @@ class BaseHorsTests(unittest.TestCase):
 
     def test_from_to_reversed(self):
         starting_point = datetime(2019, 10, 13)
-        result = process_phrase('с 2 до 5', starting_point)
+        result = process_phrase('с двух до пяти', starting_point)
         self.assertEqual(1, len(result.dates))
 
         date = result.dates[0]
