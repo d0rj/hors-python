@@ -20,7 +20,9 @@ class DaysMonthRecognizer(Recognizer):
 
         m_str = data.tokens[eg1].value
         month = ParserUtils.find_index(m_str, Keywords.months()) + 1
+        month_is_undefined = False
         if month == 0:
+            month_is_undefined = True
             month = now.month
         else:
             month_fixed = True
@@ -34,8 +36,14 @@ class DaysMonthRecognizer(Recognizer):
             if day <= 0:
                 continue
 
-            period = AbstractPeriod(datetime(now.year, month,
-                ParserUtils.get_day_valid_for_month(now.year, month, day)))
+            year = now.year
+            if month_is_undefined and day < now.day:
+                month += 1
+                if month > len(Keywords.months()):
+                    month = 1
+                    year += 1
+            period = AbstractPeriod(datetime(year, month,
+                ParserUtils.get_day_valid_for_month(year, month, day)))
 
             period.fix(FixPeriod.WEEK, FixPeriod.DAY)
             if month_fixed:
@@ -44,8 +52,8 @@ class DaysMonthRecognizer(Recognizer):
             dates.append(period)
 
             if dates and dates[-1].date < period.date and not month_fixed:
-                period.date = datetime(now.year, month + 1,
-                    ParserUtils.get_day_valid_for_month(now.year, month + 1, day))
+                period.date = datetime(year, month + 1,
+                    ParserUtils.get_day_valid_for_month(year, month + 1, day))
 
         data.replace_tokens_by_dates(s, (e - s), *dates)
 

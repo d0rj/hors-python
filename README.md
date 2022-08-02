@@ -1,5 +1,6 @@
 # Hors
 [![MIT License](https://img.shields.io/pypi/l/aiogram.svg?style=flat-square)](https://opensource.org/licenses/MIT)
+![versions](https://img.shields.io/pypi/pyversions/hors.svg)
 
 **hors** - это модуль python для распознавания даты и времени в естественной речи на русском языке. Умеет понимать сложные 
 конструкции с абсолютными и относительными датой и временем. В том числе временные периоды. [Хорс](https://ru.wikipedia.org/wiki/%D0%A5%D0%BE%D1%80%D1%81) — это славянский бог солнца

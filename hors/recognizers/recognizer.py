@@ -33,6 +33,7 @@ class Recognizer:
             match_index = len(text) - s if reversed else s
             if not action(match):
                 indexes_to_skip.add(match_index)
+            prev_match = match
             match = None
             text = input()
             matches = list(finditer(pattern, text))
@@ -40,6 +41,6 @@ class Recognizer:
                 index = -i - 1 if reversed else i
                 s1, _ = matches[index].span()
                 match_index = len(text) - s1 if reversed else s1
-                if match_index not in indexes_to_skip:
+                if match_index not in indexes_to_skip and matches[index].span() != prev_match.span():
                     match = matches[index]
                     break

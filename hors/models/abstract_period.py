@@ -154,4 +154,3 @@ class AbstractPeriod(IHasEdges):
         base.end = max(base.end, cover.end)
 
         return True
-    # def collapse_two(base: AbstractPeriod, cover: AbstractPeriod, is_linked: bool) -> bool:
