@@ -50,9 +50,11 @@ def process_phrase(phrase: str, now: Optional[datetime] = None) -> HorsParseResu
 
     hors_result = parse(phrase, now)
     if not hors_result.dates:
+        # пробуем с добавлением 'сегодня' в текст
         phrase = preprocess_today(phrase)
         hors_result = parse(phrase, now)
     if not hors_result.dates:
+        # пробуем с добавлением 'числа' в текст
         phrase = preprocess_add_dayinmonth(phrase)
         hors_result = parse(phrase, now)
 
