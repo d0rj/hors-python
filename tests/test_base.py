@@ -394,6 +394,38 @@ class BaseHorsTests(unittest.TestCase):
         self.assertEqual(31, date_from.day)
         self.assertEqual(8, date_from.month)
 
+    def test_number_after_time(self):
+        starting_point = datetime(2022, 8, 1, 17)
+        result = process_phrase('в пятнадцать', starting_point)
+
+        date = result.dates[0]
+        self.assertEqual(DateTimeTokenType.FIXED, date.type)
+        date_from = date.date_from
+        self.assertEqual(15, date_from.hour)
+        self.assertEqual(2, date_from.day)
+        self.assertEqual(8, date_from.month)
+
+        result = process_phrase('в три', starting_point)
+
+        date = result.dates[0]
+        self.assertEqual(DateTimeTokenType.FIXED, date.type)
+        date_from = date.date_from
+        self.assertEqual(15, date_from.hour)
+        self.assertEqual(2, date_from.day)
+        self.assertEqual(8, date_from.month)
+
+    def test_number_after_time_december(self):
+        starting_point = datetime(2022, 12, 31, 17)
+        result = process_phrase('в пятнадцать', starting_point)
+
+        date = result.dates[0]
+        self.assertEqual(DateTimeTokenType.FIXED, date.type)
+        date_from = date.date_from
+        self.assertEqual(15, date_from.hour)
+        self.assertEqual(1, date_from.day)
+        self.assertEqual(1, date_from.month)
+        self.assertEqual(2023, date_from.year)
+
     def test_number_after_date(self):
         starting_point = datetime(2022, 8, 29)
         result = process_phrase('двадцать четвёртого', starting_point)

@@ -66,6 +66,8 @@ def convert_to_token(period: AbstractPeriod, now: datetime) -> DateTimeToken:
         token.date_to = period.date + timedelta(days=1) - timedelta(microseconds=1)
     elif max_fixed in [FixPeriod.TIME, FixPeriod.TIME_UNCERTAIN]:
         token.type = DateTimeTokenType.FIXED
+        if now.hour > period.date.hour:
+            period.date = period.date + timedelta(days=1)
         token.date_from = period.date
         token.date_to = period.date
         token.has_time = True
